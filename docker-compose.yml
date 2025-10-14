@@ -1,4 +1,4 @@
-docker compose downservices:
+services:
   postgres:
     image: postgres:16-alpine
     container_name: client-contract-postgres
