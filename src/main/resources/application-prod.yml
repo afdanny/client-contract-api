@@ -1,0 +1,45 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:prod-db}:${DB_PORT:5433}/${DB_NAME:client_contract_db}
+    username: ${DB_USER:appuser}
+    password: ${DB_PASSWORD:secret}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 60000
+      connection-timeout: 30000
+      pool-name: ClientContractPool
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+  liquibase:
+    enabled: true
+    contexts: prod
+
+server:
+  port: ${PORT:8080}
+  servlet:
+    context-path: /api
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+  file:
+    name: logs/client-contract-api.log
