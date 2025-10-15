@@ -1,11 +1,53 @@
 package ch.afdanny.technicalexercise.clientcontractapi.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import ch.afdanny.technicalexercise.clientcontractapi.model.enums.ClientType;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-public class Client {
+@Table(name = "client")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
+public abstract class Client {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String name;
+
+    @Email @NotBlank
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Pattern(regexp = "^[+]?[0-9\\s.-]{7,15}$", message = "Invalid phone number")
+    @Column(nullable = false)
+    private String phone;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ClientType type;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = false)
+    @Builder.Default
+    private List<Contract> contracts = new ArrayList<>();
+
+    @Column(name = "deleted_at")
+    private Instant deletedAt; // soft delete
+
+    public boolean isDeleted() { return deletedAt != null; }
+
+    public void markAsDeleted() { this.deletedAt = Instant.now(); }
 }
