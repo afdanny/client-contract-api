@@ -1,0 +1,6 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop  # auto create schema for tests
+    show-sql: false
+  #   liquibase.enabled: false
