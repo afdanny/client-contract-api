@@ -1,56 +1,39 @@
 package ch.afdanny.technicalexercise.clientcontractapi.exception;
 
-import ch.afdanny.technicalexercise.clientcontractapi.service.ClientService;
-import org.springframework.http.*;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import ch.afdanny.technicalexercise.clientcontractapi.dto.response.ErrorResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
-import java.util.List;
-import java.util.Map;
+import java.time.Instant;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final MediaType VA_ERROR = MediaType.valueOf("application/vnd.va.error+json");
-    private static final MediaType VA_VALIDATION = MediaType.valueOf("application/vnd.va.validation+json");
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, List<Map<String, Object>>>> handleValidation(MethodArgumentNotValidException ex, WebRequest req) {
-        var validations = ex.getBindingResult().getFieldErrors().stream()
-                .map(fe -> Map.of(
-                        "display", fe.getDefaultMessage(),
-                        "code", "validationError",
-                        "fields", List.of(fe.getField())
-                )).toList();
-
-        var body = Map.of("validations", validations);
-        return ResponseEntity.unprocessableEntity()
-                .contentType(VA_VALIDATION)
-                .body(body);
+    private static ErrorResponse body(HttpStatus status, String message) {
+        return new ErrorResponse(
+                Instant.now(),
+                status.value(),
+                status.getReasonPhrase(),
+                message
+        );
     }
 
-    @ExceptionHandler(ClientService.ConflictException.class)
-    public ResponseEntity<Map<String, String>> handleConflict(ClientService.ConflictException ex) {
-        var body = Map.of(
-                "message", ex.getMessage(),
-                "display", "Conflict",
-                "code", "conflict"
-        );
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .contentType(VA_ERROR)
-                .body(body);
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleContractNotFound(NotFoundException ex) {
+        var status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(body(status, ex.getMessage()));
     }
 
-    @ExceptionHandler(ClientService.NotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleNotFound(ClientService.NotFoundException ex) {
-        var body = Map.of(
-                "message", ex.getMessage(),
-                "display", "Not Found",
-                "code", "notFound"
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .contentType(VA_ERROR)
-                .body(body);
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleContractConflict(ConflictException ex) {
+        var status = HttpStatus.CONFLICT;
+        return ResponseEntity.status(status).body(body(status, ex.getMessage()));
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorResponse> handleContractBadRequest(BadRequestException ex) {
+        var status = HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(body(status, ex.getMessage()));
     }
 }
