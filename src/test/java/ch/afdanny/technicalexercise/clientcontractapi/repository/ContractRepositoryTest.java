@@ -42,7 +42,7 @@ class ContractRepositoryTest {
         return personClientRepository.save(PersonClient.builder()
                 .name(name)
                 .email(email)
-                .phone("+41 79 000 00 00")
+                .phone("+41790000000")
                 .birthdate(LocalDate.of(1990, 1, 1))
                 .build());
     }

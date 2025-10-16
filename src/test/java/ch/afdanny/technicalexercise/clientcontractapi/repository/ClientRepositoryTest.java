@@ -43,14 +43,14 @@ class ClientRepositoryTest {
         var activeClient = personClientRepository.save(PersonClient.builder()
                 .name("Alice Active")
                 .email("alice@test.ch")
-                .phone("+41 79 000 00 01")
+                .phone("+41790000001")
                 .birthdate(LocalDate.of(1990, 1, 1))
                 .build());
 
         var deletedClient = personClientRepository.save(PersonClient.builder()
                 .name("Bob Deleted")
                 .email("bob@test.ch")
-                .phone("+41 79 000 00 02")
+                .phone("+41790000002")
                 .birthdate(LocalDate.of(1991, 1, 1))
                 .build());
 
@@ -73,7 +73,7 @@ class ClientRepositoryTest {
         var client = personClientRepository.save(PersonClient.builder()
                 .name("Charlie")
                 .email("charlie@test.ch")
-                .phone("+41 79 000 00 03")
+                .phone("+41790000003")
                 .birthdate(LocalDate.of(1992, 1, 1))
                 .build());
 
@@ -93,7 +93,7 @@ class ClientRepositoryTest {
         var client = personClientRepository.save(PersonClient.builder()
                 .name("David")
                 .email("david@test.ch")
-                .phone("+41 79 000 00 04")
+                .phone("+41790000004")
                 .birthdate(LocalDate.of(1985, 5, 5))
                 .build());
 
