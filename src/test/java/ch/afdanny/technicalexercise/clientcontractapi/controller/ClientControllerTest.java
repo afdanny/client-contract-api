@@ -294,7 +294,7 @@ class ClientControllerTest {
     @DisplayName("GET /v1/clients/{id}/contracts/active?updatedSince=... -> 200 OK (avec filtre)")
     void getActiveContracts_withUpdatedSince() throws Exception {
         var clientId = UUID.randomUUID();
-        var since = Instant.parse("2025-10-01T00:00:00Z");
+        var since = LocalDate.parse("2025-10-01");
         var ct = sampleContract(UUID.randomUUID(), clientId);
 
         given(clientService.readActive(eq(clientId))).willReturn(samplePerson(clientId));
