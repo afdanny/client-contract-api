@@ -38,10 +38,10 @@ public interface ClientRepository extends JpaRepository<Client, UUID> {
      */
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("""
-    UPDATE Client c
-       SET c.deletedAt = :now
-     WHERE c.id = :id
-       AND c.deletedAt IS NULL
-""")
+        UPDATE Client c
+           SET c.deletedAt = :now
+         WHERE c.id = :id
+           AND c.deletedAt IS NULL
+        """)
     int markAsDeleted(@Param("id") UUID id, @Param("now") Instant now);
 }

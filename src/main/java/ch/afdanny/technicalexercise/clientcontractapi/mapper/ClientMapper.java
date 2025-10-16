@@ -10,19 +10,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "email", source = "email")
-    @Mapping(target = "phone", source = "phone")
-    @Mapping(target = "birthdate", source = "birthdate")
-    @Mapping(target = "type", expression = "java(person.getType().name().toLowerCase(java.util.Locale.ROOT))")
+    @Mapping(target = "type", constant = "person")
     PersonClientResponse toPersonResponse(PersonClient person);
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "email", source = "email")
-    @Mapping(target = "phone", source = "phone")
-    @Mapping(target = "companyIdentifier", source = "companyIdentifier")
-    @Mapping(target = "type", expression = "java(company.getType().name().toLowerCase(java.util.Locale.ROOT))")
+    @Mapping(target = "type", constant = "company")
     CompanyClientResponse toCompanyResponse(CompanyClient company);
 }

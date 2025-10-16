@@ -1,6 +1,7 @@
 package ch.afdanny.technicalexercise.clientcontractapi.model;
 
 import ch.afdanny.technicalexercise.clientcontractapi.model.enums.ClientType;
+import ch.afdanny.technicalexercise.clientcontractapi.validation.Phone;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -32,7 +33,7 @@ public abstract class Client {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Pattern(regexp = "^[+]?[0-9\\s.-]{7,15}$", message = "Invalid phone number")
+    @Phone
     @Column(nullable = false)
     private String phone;
 
