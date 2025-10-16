@@ -1,29 +1,12 @@
-# 🏗️ Client Contract API
+# ☕ Client Contract API
 
-> **Spring Boot + PostgreSQL + Liquibase + Docker Compose**
+A RESTful API built with **Spring Boot (Java 21)** and **PostgreSQL**, designed to manage **clients** (persons or companies) and their associated **contracts**.
 
-This project provides a RESTful API to manage **clients** (either persons or companies) and their associated **contracts**.  
-It has been implemented as part of the **technical assessment for the Java / Spring Boot Developer position** within the **API Factory team at Vaudoise Assurances**.
-
----
-
-## 🚀 Tech Stack
-
-| Area | Technology |
-|-------|-------------|
-| Language | Java 21 |
-| Framework | Spring Boot 3.5.6 |
-| Persistence | JPA / Hibernate |
-| Database | PostgreSQL 16 (Dockerized) |
-| Schema Management | Liquibase |
-| Build Tool | Maven Wrapper (`./mvnw`) |
-| Testing | JUnit 5 / Spring Boot Test |
-| Containerization | Docker Compose |
-| Configuration | YAML profiles (`dev` / `prod`) |
+This project was developed as part of the **technical assessment** for the **Java / Spring Boot Developer** position at **Vaudoise Assurances – API Factory**.
 
 ---
 
-## ⚙️ Setup & Run
+## ⚙️ Run Locally
 
 ### 1️⃣ Clone the repository
 ```bash
@@ -31,111 +14,72 @@ git clone https://github.com/<your-user>/client-contract-api.git
 cd client-contract-api
 ```
 
-### 2️⃣ Start the database environment
+### 2️⃣ Start PostgreSQL (Docker)
 ```bash
 make db-up
 ```
+- DB: `client_contract_db`
+- URL: `jdbc:postgresql://localhost:5433/client_contract_db`
+- Username: `postgres`
+- Password: `postgres`
 
-Services:
-- **PostgreSQL** → `localhost:5433`
-- **Adminer UI** → [http://localhost:8081](http://localhost:8081)
-  - Server: `postgres`
-  - Username: `postgres`
-  - Password: `postgres`
-  - Database: `client_contract_db`
-
-### 3️⃣ Launch the Spring Boot app (dev profile)
+### 3️⃣ Run the Spring Boot app
 ```bash
 make run-dev
 ```
-
-> This command starts the application with the `dev` profile and automatically applies Liquibase migrations.
-
----
-
-## 🧱 Project Structure
-
-```
-client-contract-api/
-├── docker-compose.yml                 # Dockerized PostgreSQL + Adminer
-├── Makefile                           # Developer productivity commands
-├── pom.xml                            # Maven configuration
-├── src/
-│   ├── main/
-│   │   ├── java/ch/afdanny/technicalexercise/clientcontractapi/
-│   │   │   └── ClientContractApiApplication.java
-│   │   └── resources/
-│   │       ├── application.yml        # Global config
-│   │       ├── application-dev.yml    # Development profile
-│   │       ├── application-prod.yml   # Production profile
-│   │       └── db/changelog/          # Liquibase changelogs
-│   │           ├── changelog-master.xml
-│   │           └── 000-init-schema.xml
-│   └── test/
-│       └── java/...                   # Integration tests
-```
+→ The API will be available at: [http://localhost:8080/api](http://localhost:8080/api)
 
 ---
 
-## 🧰 Makefile Commands
+## 🧭 API Documentation
 
-| Command | Description |
-|----------|-------------|
-| `make db-up` | Start PostgreSQL (5433) and Adminer (8081) |
-| `make db-down` | Stop containers but keep the data volume |
-| `make db-clean` | Stop and remove containers + volumes (DB reset) |
-| `make run-dev` | Run Spring Boot with the `dev` profile |
-| `make logs` | Follow Docker logs |
-| `make status` | Display running containers |
-| `make psql` | Open a PostgreSQL shell inside the container |
-| `make help` | Display available Make targets |
+Swagger UI and OpenAPI 3 specification are automatically generated at runtime.
+
+| Resource | URL |
+|-----------|-----|
+| Swagger UI | [http://localhost:8080/api/swagger-ui.html](http://localhost:8080/api/swagger-ui.html) |
+| OpenAPI JSON | [http://localhost:8080/api/v3/api-docs](http://localhost:8080/api/v3/api-docs) |
+| OpenAPI YAML | [http://localhost:8080/api/v3/api-docs.yaml](http://localhost:8080/api/v3/api-docs.yaml) |
 
 ---
 
-## 🧩 Database Migrations (Liquibase)
+## 🧩 API Overview
 
-Liquibase is used to version and manage all schema changes.
-
-**Files:**
-- `changelog-master.xml` → root changelog entry
-- `000-init-schema.xml` → simple verification table (`liquibase_test`)
-
-At application startup:
-1. Liquibase connects to the database defined by the active Spring profile.
-2. Executes pending changelogs in order.
-3. Tracks applied changes in `databasechangelog` and `databasechangeloglock`.
+| Feature | Endpoint | Method |
+|----------|-----------|--------|
+| Create person client | `/v1/clients/person` | POST |
+| Create company client | `/v1/clients/company` | POST |
+| Get client by ID | `/v1/clients/{id}` | GET |
+| Update client | `/v1/clients/{id}` | PUT |
+| Delete client | `/v1/clients/{id}` | DELETE |
+| Create contract | `/v1/contracts` | POST |
+| Update contract (cost only) | `/v1/contracts/{id}` | PUT |
+| List active contracts | `/v1/clients/{id}/contracts/active` | GET |
+| Sum of active contracts | `/v1/clients/{id}/contracts/active/sum` | GET |
 
 ---
 
-## 🧪 Verification
+## 🧠 Architecture & Design
 
-### Check Liquibase tables
+This API follows a **layered architecture (Controller → Service → Repository)** using **Spring Boot 3.5**, **Spring Data JPA**, and **PostgreSQL**.  
+Entities are persisted through **JPA/Hibernate** and exposed as DTOs via **MapStruct**, ensuring a clean separation between data and presentation layers.  
+Validation is handled using **Jakarta Validation** annotations (`@Email`, `@Pattern`, `@Positive`, etc.).  
+Soft-deletion is implemented at the service layer: when a client is deleted, its active contracts are automatically closed by setting their end date to the current date.  
+Error handling is centralized with a `GlobalExceptionHandler`, providing consistent JSON responses.  
+Endpoints use clear REST semantics (`201 Created`, `404 Not Found`, `409 Conflict`) and demonstrate scalability via pagination, filtering, and aggregation patterns.
+
+---
+
+## ✅ Proof
+
+All core use cases are covered by **JUnit 5** and **MockMvc** tests in `src/test/java`.  
+To verify locally:
 ```bash
-make psql
-# then inside psql:
-\dt
-```
-Expected output:
-```
-databasechangelog
-databasechangeloglock
-liquibase_test
-```
-
-### Check PostgreSQL health
-```bash
-docker exec -it client-contract-postgres pg_isready -U postgres -d client_contract_db
+./mvnw test
 ```
 
 ---
 
-## 📘 License
+## 👤 Author
 
-This project was developed **for demonstration and evaluation purposes**  
-within the technical assessment for **Vaudoise Assurances – API Factory**.
-
----
-
-## 👨‍💻 Author
-
-**Danny Albuquerque Ferreira**
+**Danny Albuquerque Ferreira**  
