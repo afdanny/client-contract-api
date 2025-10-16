@@ -1,0 +1,78 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="danny (generated)" id="1760554813392-1">
+        <createTable tableName="client">
+            <column name="deleted_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="client_pkey"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danny (generated)" id="1760554813392-2">
+        <createTable tableName="company_client">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="company_client_pkey"/>
+            </column>
+            <column name="company_identifier" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danny (generated)" id="1760554813392-3">
+        <addUniqueConstraint columnNames="email" constraintName="client_email_key" tableName="client"/>
+    </changeSet>
+    <changeSet author="danny (generated)" id="1760554813392-4">
+        <addUniqueConstraint columnNames="company_identifier" constraintName="company_client_company_identifier_key" tableName="company_client"/>
+    </changeSet>
+    <changeSet author="danny (generated)" id="1760554813392-5">
+        <createTable tableName="contract">
+            <column name="cost_amount" type="numeric(38, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="date"/>
+            <column name="start_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_update_date" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="contract_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danny (generated)" id="1760554813392-6">
+        <createTable tableName="person_client">
+            <column name="birthdate" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="person_client_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="danny (generated)" id="1760554813392-7">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="person_client" constraintName="fk951h4j6k0no5d53six0uvaps9" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+    <changeSet author="danny (generated)" id="1760554813392-8">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="company_client" constraintName="fkdxjt1y2hbtivelvd86ibx8e6j" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+    <changeSet author="danny (generated)" id="1760554813392-9">
+        <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="contract" constraintName="fklhq3p3xl25vvnfvyfc51ica0j" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="client" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

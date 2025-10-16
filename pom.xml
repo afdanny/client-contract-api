@@ -31,6 +31,7 @@
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <lombok.version>1.18.42</lombok.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.8.13</springdoc-openapi-starter-webmvc-ui.version>
     </properties>
     <dependencies>
         <dependency>
@@ -86,6 +87,11 @@
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -116,6 +122,43 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.31.1</version>
+
+                <dependencies>
+                    <!-- Extension Liquibase Hibernate 6 -->
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate6</artifactId>
+                        <version>4.23.1</version>
+                    </dependency>
+
+                    <!-- Driver PostgreSQL -->
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>42.7.7</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5433/client_contract_db</url>
+                    <username>postgres</username>
+                    <password>postgres</password>
+                    <driver>org.postgresql.Driver</driver>
+
+                    <changeLogFile>src/main/resources/db/changelog/changelog-000-initial-schema.xml</changeLogFile>
+
+                    <referenceUrl>
+                        hibernate:spring:ch.afdanny.technicalexercise.clientcontractapi.model?dialect=org.hibernate.dialect.PostgreSQLDialect
+                    </referenceUrl>
+                    <referenceDriver>org.liquibase.ext.hibernate.database.connection.HibernateDriver</referenceDriver>
+
+                    <diffTypes>tables,columns,foreignkeys,primarykeys,uniqueconstraints,indexes</diffTypes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

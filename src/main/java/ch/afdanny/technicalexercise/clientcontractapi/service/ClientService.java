@@ -5,9 +5,11 @@ import ch.afdanny.technicalexercise.clientcontractapi.repository.ClientRepositor
 import ch.afdanny.technicalexercise.clientcontractapi.repository.ContractRepository;
 import ch.afdanny.technicalexercise.clientcontractapi.repository.CompanyClientRepository;
 import ch.afdanny.technicalexercise.clientcontractapi.repository.PersonClientRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -98,6 +100,16 @@ public class ClientService {
     public Client readActive(UUID id) {
         return clientRepository.findActiveById(id)
                 .orElseThrow(() -> new NotFoundException("Client not found or deleted"));
+    }
+
+    // -- List --------------------------------------------------------------------------------------
+
+    /**
+     * Returns active (non-deleted) clients using offset/limit pagination.
+     */
+    @Transactional(readOnly = true)
+    public Page<Client> listActive(Pageable pageable) {
+        return clientRepository.findAllActive(pageable);
     }
 
     // -- Update (partial) --------------------------------------------------------------------------
