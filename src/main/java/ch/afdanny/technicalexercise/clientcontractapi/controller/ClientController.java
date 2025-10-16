@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -92,7 +93,7 @@ public class ClientController {
     @GetMapping("/{id}/contracts/active")
     public ResponseEntity<List<ContractResponse>> getActiveContractsForClient(
             @PathVariable UUID id,
-            @RequestParam(required = false) Instant updatedSince
+            @RequestParam(required = false) LocalDate updatedSince
     ) {
         clientService.readActive(id);
 

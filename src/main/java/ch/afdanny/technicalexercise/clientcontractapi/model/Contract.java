@@ -35,16 +35,16 @@ public class Contract {
     private BigDecimal costAmount;
 
     @Column(nullable = false)
-    private Instant lastUpdateDate;
+    private LocalDate lastUpdateDate;
 
     @PrePersist
     public void onCreate() {
         if (startDate == null) startDate = LocalDate.now();
-        lastUpdateDate = Instant.now();
+        lastUpdateDate = LocalDate.now();
     }
 
     public void setCostAmount(BigDecimal newAmount) {
         this.costAmount = newAmount;
-        this.lastUpdateDate = Instant.now();
+        this.lastUpdateDate = LocalDate.now();
     }
 }

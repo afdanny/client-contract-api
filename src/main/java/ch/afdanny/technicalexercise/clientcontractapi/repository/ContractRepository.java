@@ -51,7 +51,7 @@ public interface ContractRepository extends JpaRepository<Contract, UUID> {
     @Query("""
            UPDATE Contract ct
               SET ct.endDate = :today,
-                  ct.lastUpdateDate = CURRENT_TIMESTAMP
+                  ct.lastUpdateDate = CURRENT_DATE
             WHERE ct.client.id = :clientId
               AND (ct.endDate IS NULL OR ct.endDate > :today)
            """)
@@ -67,7 +67,7 @@ public interface ContractRepository extends JpaRepository<Contract, UUID> {
             """)
     List<Contract> findActiveContractsByClientUpdatedSince(@Param("clientId") UUID clientId,
                                                            @Param("today") LocalDate today,
-                                                           @Param("updatedSince") Instant updatedSince);
+                                                           @Param("updatedSince") LocalDate updatedSince);
 
     @Query("""
             SELECT COALESCE(SUM(ct.costAmount), 0)

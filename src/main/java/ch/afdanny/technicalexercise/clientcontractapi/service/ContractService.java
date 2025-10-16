@@ -40,7 +40,7 @@ public class ContractService {
                 .startDate(startDate)
                 .endDate(endDate) // null => active/open-ended
                 .costAmount(costAmount)
-                .lastUpdateDate(Instant.now())
+                .lastUpdateDate(LocalDate.now())
                 .build();
 
         try {
@@ -66,7 +66,7 @@ public class ContractService {
     }
 
     @Transactional(readOnly = true)
-    public List<Contract> listActiveByClientSince(UUID clientId, Instant updatedSince) {
+    public List<Contract> listActiveByClientSince(UUID clientId, LocalDate updatedSince) {
         LocalDate today = LocalDate.now();
         return contractRepository.findActiveContractsByClientUpdatedSince(clientId, today, updatedSince);
     }
@@ -85,7 +85,7 @@ public class ContractService {
             contract.setCostAmount(newCostAmount);
         }
 
-        contract.setLastUpdateDate(Instant.now());
+        contract.setLastUpdateDate(LocalDate.now());
         try {
             return contractRepository.saveAndFlush(contract);
         } catch (DataIntegrityViolationException e) {
