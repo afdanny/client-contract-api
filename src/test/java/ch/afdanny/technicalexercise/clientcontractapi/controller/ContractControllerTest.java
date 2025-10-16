@@ -64,7 +64,7 @@ class ContractControllerTest {
                 .startDate(LocalDate.of(2024, 1, 1))
                 .endDate(null)
                 .costAmount(new BigDecimal("123.45"))
-                .lastUpdateDate(Instant.parse("2025-01-01T12:00:00Z"))
+                .lastUpdateDate(LocalDate.parse("2025-01-01"))
                 .build();
     }
 
@@ -183,7 +183,7 @@ class ContractControllerTest {
 
         Contract updated = sampleContract(id, clientId);
         updated.setCostAmount(new BigDecimal("200.00"));
-        updated.setLastUpdateDate(Instant.now());
+        updated.setLastUpdateDate(LocalDate.now());
 
         var req = new ContractUpdateRequest(new BigDecimal("200.00"));
 

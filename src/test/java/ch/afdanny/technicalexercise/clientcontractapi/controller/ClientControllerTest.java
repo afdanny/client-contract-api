@@ -301,7 +301,7 @@ class ClientControllerTest {
         given(contractService.listActiveByClientSince(eq(clientId), eq(since))).willReturn(List.of(ct));
 
         mvc.perform(get(BASE + "/" + clientId + "/contracts/active")
-                        .param("updatedSince", "2025-10-01T00:00:00Z"))
+                        .param("updatedSince", "2025-10-01"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].clientId", is(clientId.toString())));
