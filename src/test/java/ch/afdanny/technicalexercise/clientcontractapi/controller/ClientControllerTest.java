@@ -90,7 +90,7 @@ class ClientControllerTest {
                 .startDate(LocalDate.of(2024, 1, 1))
                 .endDate(null)
                 .costAmount(new BigDecimal("123.45"))
-                .lastUpdateDate(Instant.parse("2025-01-01T12:00:00Z"))
+                .lastUpdateDate(LocalDate.parse("2025-01-01"))
                 .build();
     }
 
