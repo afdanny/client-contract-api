@@ -28,7 +28,7 @@ class PersonClientValidationTest {
         PersonClient invalid = PersonClient.builder()
                 .name("Alice")
                 .email("alice@example.ch")
-                .phone("+41 79 123 45 67")
+                .phone("+41791234567")
                 .birthdate(LocalDate.now().plusDays(1)) // ❌ future date
                 .build();
 
@@ -44,7 +44,7 @@ class PersonClientValidationTest {
         PersonClient invalid = PersonClient.builder()
                 .name("Bob")
                 .email("bob@example.ch")
-                .phone("+41 21 123 45 67")
+                .phone("+41211234567")
                 .birthdate(null) // ❌ missing
                 .build();
 
@@ -59,7 +59,7 @@ class PersonClientValidationTest {
         PersonClient invalid = PersonClient.builder()
                 .name("Charlie")
                 .email("not-an-email") // ❌ invalid email
-                .phone("+41 22 111 11 11")
+                .phone("+41221111111")
                 .birthdate(LocalDate.of(1990, 1, 1))
                 .build();
 
@@ -89,7 +89,7 @@ class PersonClientValidationTest {
         PersonClient invalid = PersonClient.builder()
                 .name("") // ❌ empty name
                 .email("eva@example.ch")
-                .phone("+41 79 333 33 33")
+                .phone("+41793333333")
                 .birthdate(LocalDate.of(1995, 3, 15))
                 .build();
 
@@ -104,7 +104,7 @@ class PersonClientValidationTest {
         PersonClient valid = PersonClient.builder()
                 .name("Fiona")
                 .email("fiona@example.ch")
-                .phone("+41 78 999 99 99")
+                .phone("+41789999999")
                 .birthdate(LocalDate.of(1990, 4, 25))
                 .build();
 

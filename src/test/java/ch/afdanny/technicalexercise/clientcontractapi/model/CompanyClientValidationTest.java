@@ -27,7 +27,7 @@ class CompanyClientValidationTest {
         CompanyClient invalid = CompanyClient.builder()
                 .name("Vaudoise Assurances")
                 .email("info@vaudoise.ch")
-                .phone("+41 21 999 99 99")
+                .phone("+41219999999")
                 .companyIdentifier("123-ABC") // ❌ invalid format
                 .build();
 
@@ -43,7 +43,7 @@ class CompanyClientValidationTest {
         CompanyClient invalid = CompanyClient.builder()
                 .name("Vaudoise")
                 .email("info@vaudoise.ch")
-                .phone("+41 21 000 00 00")
+                .phone("+41210000000")
                 .companyIdentifier(null) // ❌ required
                 .build();
 
@@ -58,7 +58,7 @@ class CompanyClientValidationTest {
         CompanyClient invalid = CompanyClient.builder()
                 .name("Vaudoise")
                 .email("not-an-email") // ❌ invalid email
-                .phone("+41 21 000 00 00")
+                .phone("+41210000000")
                 .companyIdentifier("AAA-123")
                 .build();
 
@@ -88,7 +88,7 @@ class CompanyClientValidationTest {
         CompanyClient valid = CompanyClient.builder()
                 .name("Vaudoise Assurances SA")
                 .email("contact@vaudoise.ch")
-                .phone("+41 21 618 81 11")
+                .phone("+41216188111")
                 .companyIdentifier("ABC-456")
                 .build();
 

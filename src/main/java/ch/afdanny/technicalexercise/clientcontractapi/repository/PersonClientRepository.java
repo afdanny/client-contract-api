@@ -8,5 +8,4 @@ import java.util.UUID;
 
 @Repository
 public interface PersonClientRepository extends JpaRepository<PersonClient, UUID> {
-    // Inherits all CRUD methods from JpaRepository
 }
