@@ -8,10 +8,14 @@ This project was developed as part of the **technical assessment** for the **Jav
 
 ## ⚡ Quickstart
 
-If you have **Docker** installed, you can run the entire project in one line:
+If you have **Docker** installed and started, you can run the entire project in one line:
 
 ```bash
 docker compose up -d && ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+```
+> 💡 On **Windows**, use:
+```bash
+docker compose up -d && mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 Once started:
@@ -76,6 +80,10 @@ make run-dev
 **Option B — Manual:**
 ```bash
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+```
+> 💡 On **Windows**, use:
+```bash
+mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 → The API will be available at: [http://localhost:8080/api](http://localhost:8080/api)
 
