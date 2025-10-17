@@ -140,6 +140,11 @@ To verify locally:
 ./mvnw test
 ```
 
+> 💡 On **Windows**, use:
+```bash
+mvnw test
+```
+
 ---
 
 ## 🧰 Makefile Commands
