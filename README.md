@@ -6,6 +6,21 @@ This project was developed as part of the **technical assessment** for the **Jav
 
 ---
 
+## ⚡ Quickstart
+
+If you have **Docker** installed, you can run the entire project in one line:
+
+```bash
+docker compose up -d && ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
+Once started:
+- API Swagger UI → [http://localhost:8080/api/swagger-ui.html](http://localhost:8080/api/swagger-ui.html)
+- OpenAPI JSON → [http://localhost:8080/api/v3/api-docs](http://localhost:8080/api/v3/api-docs)
+- Adminer (DB UI) → [http://localhost:8081](http://localhost:8081)
+
+---
+
 ## ⚙️ Setup & Run
 
 ### 🧰 1️⃣ Prerequisites
