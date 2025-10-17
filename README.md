@@ -61,12 +61,12 @@ Swagger UI and OpenAPI 3 specification are automatically generated at runtime.
 
 ## 🧠 Architecture & Design
 
-This API follows a **layered architecture (Controller → Service → Repository)** using **Spring Boot 3.5**, **Spring Data JPA**, and **PostgreSQL**.  
-Entities are persisted through **JPA/Hibernate** and exposed as DTOs via **MapStruct**, ensuring a clean separation between data and presentation layers.  
-Validation is handled using **Jakarta Validation** annotations (`@Email`, `@Pattern`, `@Positive`, etc.).  
-Soft-deletion is implemented at the service layer: when a client is deleted, its active contracts are automatically closed by setting their end date to the current date.  
-Error handling is centralized with a `GlobalExceptionHandler`, providing consistent JSON responses.  
-Endpoints use clear REST semantics (`201 Created`, `404 Not Found`, `409 Conflict`) and demonstrate scalability via pagination, filtering, and aggregation patterns.
+This API follows a layered architecture (Controller → Service → Repository) built with Spring Boot 3.5, Spring Data JPA, and PostgreSQL.
+Entities are managed via Hibernate ORM and mapped to DTOs using MapStruct.
+Validation is enforced through Jakarta Bean Validation annotations (@Email, @Pattern, @Positive, etc.), and error handling is centralized in a GlobalExceptionHandler, providing consistent JSON responses.
+Soft deletion is implemented at the service layer, allowing entities to be logically deleted while preserving their historical data.
+Liquibase is integrated for future production deployment and database migration management, ensuring reproducible and version-controlled schema evolution.
+Endpoints strictly follow REST conventions (201 Created, 404 Not Found, 409 Conflict, etc.) and are documented via OpenAPI 3 / Swagger UI for easy exploration and testing.
 
 ---
 
