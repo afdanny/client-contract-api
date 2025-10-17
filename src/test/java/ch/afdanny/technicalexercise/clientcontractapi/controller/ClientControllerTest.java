@@ -26,7 +26,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -43,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Web MVC slice test for ClientController.
  * - Mocks ClientService & ContractService
- * - Uses real MapStruct impls (ClientMapperImpl, ContractMapperImpl)
+ * - Uses real MapStruxect impls (ClientMapperImpl, ContractMapperImpl)
  * - Verifies 201/200/204 success, and 400/404/409 error mappings
  */
 @WebMvcTest(controllers = ClientController.class)
@@ -59,9 +58,6 @@ class ClientControllerTest {
     @MockitoBean ClientService clientService;
     @MockitoBean ContractService contractService;
 
-    // ---------------------------------------------------------------------
-    // Helpers
-    // ---------------------------------------------------------------------
     private static PersonClient samplePerson(UUID id) {
         return PersonClient.builder()
                 .id(id)
@@ -93,10 +89,6 @@ class ClientControllerTest {
                 .lastUpdateDate(LocalDate.parse("2025-01-01"))
                 .build();
     }
-
-    // ---------------------------------------------------------------------
-    // CREATE
-    // ---------------------------------------------------------------------
 
     @Test
     @DisplayName("POST /v1/clients/person -> 201 Created + Location")
@@ -155,10 +147,6 @@ class ClientControllerTest {
                 .andExpect(jsonPath("$.status", is(409)));
     }
 
-    // ---------------------------------------------------------------------
-    // READ by id (polymorphique)
-    // ---------------------------------------------------------------------
-
     @Test
     @DisplayName("GET /v1/clients/{id} -> 200 Person")
     void getById_person_ok() throws Exception {
@@ -199,10 +187,6 @@ class ClientControllerTest {
                 .andExpect(jsonPath("$.status", is(404)));
     }
 
-    // ---------------------------------------------------------------------
-    // UPDATE
-    // ---------------------------------------------------------------------
-
     @Test
     @DisplayName("PUT /v1/clients/{id} -> 200 OK (person)")
     void update_ok_person() throws Exception {
@@ -242,10 +226,6 @@ class ClientControllerTest {
                 .andExpect(jsonPath("$.status", is(409)));
     }
 
-    // ---------------------------------------------------------------------
-    // DELETE
-    // ---------------------------------------------------------------------
-
     @Test
     @DisplayName("DELETE /v1/clients/{id} -> 204 No Content")
     void delete_noContent() throws Exception {
@@ -267,10 +247,6 @@ class ClientControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", is(404)));
     }
-
-    // ---------------------------------------------------------------------
-    // GET active contracts for a client (+ filtre updatedSince)
-    // ---------------------------------------------------------------------
 
     @Test
     @DisplayName("GET /v1/clients/{id}/contracts/active -> 200 OK (sans filtre)")

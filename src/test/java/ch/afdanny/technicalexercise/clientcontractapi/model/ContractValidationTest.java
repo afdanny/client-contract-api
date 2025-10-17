@@ -25,10 +25,6 @@ class ContractValidationTest {
         validator = factory.getValidator();
     }
 
-    // -------------------------------------------------------------------------
-    // ContractRequest (CREATE)
-    // -------------------------------------------------------------------------
-
     @Test
     void createRequest_valid_ok() {
         ContractRequest req = new ContractRequest(
@@ -81,13 +77,6 @@ class ContractValidationTest {
         assertHasViolationOn(v, "costAmount");
     }
 
-    // NOTE: startDate peut être null (le service mettra "today").
-    // NOTE: la règle "endDate >= startDate" est vérifiée dans le service (pas en Bean Validation).
-
-    // -------------------------------------------------------------------------
-    // ContractUpdateRequest (UPDATE PARTIAL)
-    // -------------------------------------------------------------------------
-
     @Test
     void updateRequest_allFieldsNull_isValid() {
         // endDate et costAmount sont optionnels (nullable)
@@ -106,10 +95,6 @@ class ContractValidationTest {
         Set<ConstraintViolation<ContractUpdateRequest>> v = validator.validate(req);
         assertHasViolationOn(v, "costAmount");
     }
-
-    // -------------------------------------------------------------------------
-    // Helpers
-    // -------------------------------------------------------------------------
 
     private static <T> void assertHasViolationOn(Set<ConstraintViolation<T>> violations, String property) {
         assertThat(violations)
